@@ -24,4 +24,7 @@ RUN set -ex; \
         --no-interaction \
         --optimize-autoloader --apcu-autoloader \
         update;
-RUN composer require -n boressoft/ident_switch
+COPY docker-ddb-entrypoint.sh /
+RUN chmod +x /docker-ddb-entrypoint.sh
+ENTRYPOINT ["/docker-ddb-entrypoint.sh"]
+CMD ["apache2-foreground"]
