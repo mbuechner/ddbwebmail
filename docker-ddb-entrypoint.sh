@@ -10,6 +10,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
       echo >&2 "WARNING: $PWD is not empty - press Ctrl+C now if this is an error!"
       ( set -x; ls -A; sleep 10 )
     fi
+    cd /usr/src/roundcubemail && composer require -n boressoft/ident_switch
     tar cf - --one-file-system -C /usr/src/roundcubemail . | tar xf -
     echo >&2 "Complete! ROUNDCUBEMAIL has been successfully copied to $PWD"
   fi
@@ -105,7 +106,5 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
     echo "post_max_size=${ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE}" >> /usr/local/etc/php/conf.d/roundcube-override.ini
   fi
 fi
-
-cd /var/www/html/ && composer require -n boressoft/ident_switch
 
 exec "$@"
