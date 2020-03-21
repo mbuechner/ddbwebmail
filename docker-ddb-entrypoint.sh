@@ -106,7 +106,10 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
   fi
 
   echo "Install additional modules..."
-  cd $PWD && composer require `echo "${ROUNDCUBEMAIL_INSTALLPLUGINS}" | sed -E "s/[, ]+/ /g"`
+  mkdir plugins/ident_switch
+  git clone --branch 4.2 https://bitbucket.org/BoresExpress/ident_switch.git plugins/ident_switch
+  composer require roundcube/plugin-installer
+  vendor/roundcube/plugin-installer/src/bin/rcubeinitdb.sh --dir plugins/ident_switch/SQL/ --package ident_switch
 fi
 
 exec "$@"
