@@ -68,18 +68,18 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 
   echo "Write config to $PWD/config/config.inc.php";
   {
-    echo "     \$config['db_dsnw'] = '${ROUNDCUBEMAIL_DSNW}';"
-    echo "     \$config['db_dsnr'] = '${ROUNDCUBEMAIL_DSNR}';"
-    echo "     \$config['default_host'] = '${ROUNDCUBEMAIL_DEFAULT_HOST}';"
-    echo "     \$config['default_port'] = '${ROUNDCUBEMAIL_DEFAULT_PORT}';"
-    echo "     \$config['smtp_server'] = '${ROUNDCUBEMAIL_SMTP_SERVER}';"
-    echo "     \$config['smtp_port'] = '${ROUNDCUBEMAIL_SMTP_PORT}';"
-    echo "     \$config['des_key'] = '${ROUNDCUBEMAIL_DES_KEY}';"
-    echo "     \$config['temp_dir'] = '${ROUNDCUBEMAIL_TEMP_DIR}';"
-    echo "     \$config['plugins'] = ['${ROUNDCUBEMAIL_PLUGINS_PHP}'];"
-    echo "     \$config['zipdownload_selection'] = true;"
-    echo "     \$config['log_driver'] = 'stdout';"
-    echo "     \$config['skin'] = '${ROUNDCUBEMAIL_SKIN}';"
+    echo "   \$config['db_dsnw'] = '${ROUNDCUBEMAIL_DSNW}';"
+    echo "   \$config['db_dsnr'] = '${ROUNDCUBEMAIL_DSNR}';"
+    echo "   \$config['default_host'] = '${ROUNDCUBEMAIL_DEFAULT_HOST}';"
+    echo "   \$config['default_port'] = '${ROUNDCUBEMAIL_DEFAULT_PORT}';"
+    echo "   \$config['smtp_server'] = '${ROUNDCUBEMAIL_SMTP_SERVER}';"
+    echo "   \$config['smtp_port'] = '${ROUNDCUBEMAIL_SMTP_PORT}';"
+    echo "   \$config['des_key'] = '${ROUNDCUBEMAIL_DES_KEY}';"
+    echo "   \$config['temp_dir'] = '${ROUNDCUBEMAIL_TEMP_DIR}';"
+    echo "   \$config['plugins'] = ['${ROUNDCUBEMAIL_PLUGINS_PHP}'];"
+    echo "   \$config['zipdownload_selection'] = true;"
+    echo "   \$config['log_driver'] = 'stdout';"
+    echo "   \$config['skin'] = '${ROUNDCUBEMAIL_SKIN}';"
    } >> config/config.inc.php
 
   for fn in `ls /var/roundcube/config/*.php 2>/dev/null || true`; do

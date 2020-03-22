@@ -30,11 +30,17 @@ COPY images/DDBwebmail_Logo.svg /usr/src/roundcubemail/images/DDBwebmail.svg
 RUN chmod +x /docker-ddb-entrypoint.sh
 RUN { \
 	echo "<?php"; \
-	echo "    \$config['product_name'] = 'DDBwebmail';"; \
-	echo "    \$config['skin_logo'] = array("; \
-	echo "     'login[small]' => '../../images/DDBwebmail.svg',"; \
-	echo "     'login' => '../../images/DDBwebmail.svg',"; \
-	echo "     '*[small]' => '../../images/DDBwebmail.svg',"; \
+	echo "   \$config['product_name'] = 'DDBwebmail';"; \
+	echo "   \$config['cipher_method'] = 'AES-256-CBC';"; \
+        echo "   \$config['date_format'] = 'd.m.Y';"; \
+        echo "   \$config['mail_read_time'] = -1;"; \
+        echo "   \$config['htmleditor'] = 4;"; \
+        echo "   \$config['autoexpand_threads'] = 2;"; \
+        echo "   \$config['reply_mode'] = 1;"; \
+        echo "   \$config['show_sig'] = 2;"; \
+	echo "   \$config['skin_logo'] = array("; \
+	echo "     'elastic:*' => '../../images/DDBwebmail.svg',"; \
+	echo "     'elestic:*[small]' => '../../images/DDBwebmail.svg',"; \
 	echo "   );"; \
 } >> /usr/src/roundcubemail/config/config.inc.php
 RUN rm -R /usr/src/roundcubemail/skins/larry /usr/src/roundcubemail/skins/classic
