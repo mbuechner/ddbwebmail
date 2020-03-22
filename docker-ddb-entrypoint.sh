@@ -61,40 +61,33 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
   : "${ROUNDCUBEMAIL_SMTP_SERVER:=localhost}"
   : "${ROUNDCUBEMAIL_SMTP_PORT:=587}"
   : "${ROUNDCUBEMAIL_PLUGINS:=archive,zipdownload}"
-  : "${ROUNDCUBEMAIL_SKIN:=larry}"
+  : "${ROUNDCUBEMAIL_SKIN:=elastic}"
   : "${ROUNDCUBEMAIL_TEMP_DIR:=/tmp/roundcube-temp}"
 
-  if [ ! -e config/config.inc.php ]; then
-    ROUNDCUBEMAIL_PLUGINS_PHP=`echo "${ROUNDCUBEMAIL_PLUGINS}" | sed -E "s/[, ]+/', '/g"`
-    ROUNDCUBEMAIL_DES_KEY=`test -f /run/secrets/roundcube_des_key && cat /run/secrets/roundcube_des_key || head /dev/urandom | base64 | head -c 24`
-    touch config/config.inc.php
+  ROUNDCUBEMAIL_PLUGINS_PHP=`echo "${ROUNDCUBEMAIL_PLUGINS}" | sed -E "s/[, ]+/', '/g"`
 
-    echo "Write config to $PWD/config/config.inc.php"
-    echo "<?php
-    \$config['db_dsnw'] = '${ROUNDCUBEMAIL_DSNW}';
-    \$config['db_dsnr'] = '${ROUNDCUBEMAIL_DSNR}';
-    \$config['default_host'] = '${ROUNDCUBEMAIL_DEFAULT_HOST}';
-    \$config['default_port'] = '${ROUNDCUBEMAIL_DEFAULT_PORT}';
-    \$config['smtp_server'] = '${ROUNDCUBEMAIL_SMTP_SERVER}';
-    \$config['smtp_port'] = '${ROUNDCUBEMAIL_SMTP_PORT}';
-    \$config['des_key'] = '${ROUNDCUBEMAIL_DES_KEY}';
-    \$config['temp_dir'] = '${ROUNDCUBEMAIL_TEMP_DIR}';
-    \$config['plugins'] = ['${ROUNDCUBEMAIL_PLUGINS_PHP}'];
-    \$config['zipdownload_selection'] = true;
-    \$config['log_driver'] = 'stdout';
-    \$config['skin'] = '${ROUNDCUBEMAIL_SKIN}';
-    " > config/config.inc.php
+  echo "Write config to $PWD/config/config.inc.php";
+  {
+    echo "     \$config['db_dsnw'] = '${ROUNDCUBEMAIL_DSNW}';"
+    echo "     \$config['db_dsnr'] = '${ROUNDCUBEMAIL_DSNR}';"
+    echo "     \$config['default_host'] = '${ROUNDCUBEMAIL_DEFAULT_HOST}';"
+    echo "     \$config['default_port'] = '${ROUNDCUBEMAIL_DEFAULT_PORT}';"
+    echo "     \$config['smtp_server'] = '${ROUNDCUBEMAIL_SMTP_SERVER}';"
+    echo "     \$config['smtp_port'] = '${ROUNDCUBEMAIL_SMTP_PORT}';"
+    echo "     \$config['des_key'] = '${ROUNDCUBEMAIL_DES_KEY}';"
+    echo "     \$config['temp_dir'] = '${ROUNDCUBEMAIL_TEMP_DIR}';"
+    echo "     \$config['plugins'] = ['${ROUNDCUBEMAIL_PLUGINS_PHP}'];"
+    echo "     \$config['zipdownload_selection'] = true;"
+    echo "     \$config['log_driver'] = 'stdout';"
+    echo "     \$config['skin'] = '${ROUNDCUBEMAIL_SKIN}';"
+   } >> config/config.inc.php
 
-    for fn in `ls /var/roundcube/config/*.php 2>/dev/null || true`; do
-      echo "include('$fn');" >> config/config.inc.php
-    done
+  for fn in `ls /var/roundcube/config/*.php 2>/dev/null || true`; do
+    echo "include('$fn');" >> config/config.inc.php
+  done
 
-    # initialize DB if not SQLite
-    echo "${ROUNDCUBEMAIL_DSNW}" | grep -q 'sqlite:' || bin/initdb.sh --dir=$PWD/SQL || bin/updatedb.sh --dir=$PWD/SQL --package=roundcube || echo "Failed to initialize databse. Please run $PWD/bin/initdb.sh manually."
-  else
-    echo "WARNING: $PWD/config/config.inc.php already exists."
-    echo "ROUNDCUBEMAIL_* environment variables have been ignored."
-  fi
+  # initialize DB if not SQLite
+  echo "${ROUNDCUBEMAIL_DSNW}" | grep -q 'sqlite:' || bin/initdb.sh --dir=$PWD/SQL || bin/updatedb.sh --dir=$PWD/SQL --package=roundcube || echo "Failed to initialize databse. Please run $PWD/bin/initdb.sh manually."
 
   if [ ! -z "${ROUNDCUBEMAIL_TEMP_DIR}" ]; then
     mkdir -p ${ROUNDCUBEMAIL_TEMP_DIR} && chown www-data ${ROUNDCUBEMAIL_TEMP_DIR}
@@ -105,11 +98,12 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
     echo "post_max_size=${ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE}" >> /usr/local/etc/php/conf.d/roundcube-override.ini
   fi
 
-  echo "Install additional modules..."
-  mkdir plugins/ident_switch
-  git clone --branch 4.2 https://bitbucket.org/BoresExpress/ident_switch.git plugins/ident_switch
-  composer require roundcube/plugin-installer
+  # echo "Install additional modules..."
+  # mkdir plugins/ident_switch
+  # git clone --branch 4.2 https://bitbucket.org/BoresExpress/ident_switch.git plugins/ident_switch
+  # composer require roundcube/plugin-installer
   vendor/roundcube/plugin-installer/src/bin/rcubeinitdb.sh --dir plugins/ident_switch/SQL/ --package ident_switch
 fi
 
 exec "$@"
+
