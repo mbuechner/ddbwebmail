@@ -30,7 +30,7 @@ COPY images/DDBwebmail_Logo.svg /usr/src/roundcubemail/images/DDBwebmail.svg
 RUN chmod +x /docker-ddb-entrypoint.sh
 RUN { \
 	echo "<?php"; \
-	echo "   \$config['product_name'] = 'DDBwebmail // DDBlabs';"; \
+	echo "   \$config['product_name'] = 'DDBwebmail';"; \
 	echo "   \$config['cipher_method'] = 'AES-256-CBC';"; \
         echo "   \$config['date_format'] = 'd.m.Y';"; \
         echo "   \$config['mail_read_time'] = -1;"; \
@@ -45,6 +45,7 @@ RUN { \
 	echo "   \$config['skin_logo'] = array("; \
 	echo "     'elastic:*' => '../../images/DDBwebmail.svg',"; \
 	echo "     'elestic:*[small]' => '../../images/DDBwebmail.svg',"; \
+        echo "     '[favicon]' => '../../images/DDBwebmail.svg',"; \
 	echo "   );"; \
 } >> /usr/src/roundcubemail/config/config.inc.php
 RUN rm -R /usr/src/roundcubemail/skins/larry /usr/src/roundcubemail/skins/classic
