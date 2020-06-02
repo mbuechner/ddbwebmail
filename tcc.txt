@@ -1,1 +1,0 @@
-No smart card support (libpcsclite.so): libpcsclite.so: Kann die Shared-Object-Datei nicht öffnen: Datei oder Verzeichnis nicht gefunden
