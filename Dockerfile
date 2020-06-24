@@ -1,4 +1,4 @@
-FROM roundcube/roundcubemail:1.4.5
+FROM roundcube/roundcubemail:1.4.x
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
 RUN set -ex; \
