@@ -24,14 +24,12 @@ RUN set -ex; \
         --no-interaction \
         --optimize-autoloader --apcu-autoloader \
         update;
-RUN a2enmod http2
 RUN { \
 		echo "<VirtualHost *:80>"; \
-		echo "  ServerAdmin mbuechner@dnb.de"; \
+		echo "  ServerAdmin m.buechner@dnb.de"; \
 		echo "  DocumentRoot /var/www/html"; \
 		echo "  ErrorLog ${APACHE_LOG_DIR}/error.log"; \
 		echo "  CustomLog ${APACHE_LOG_DIR}/access.log combined"; \
-		echo "  Protocols h2 http/1.1"; \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
 COPY docker-ddb-entrypoint.sh /
