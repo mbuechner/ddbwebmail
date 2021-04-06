@@ -24,12 +24,13 @@ RUN set -ex; \
         --no-interaction \
         --optimize-autoloader --apcu-autoloader \
         update;
+RUN echo "LISTEN 8080" > /etc/apache2/ports.conf
 RUN { \
-		echo "<VirtualHost *:80>"; \
+		echo "<VirtualHost *:8080>"; \
 		echo "  ServerAdmin m.buechner@dnb.de"; \
 		echo "  DocumentRoot /var/www/html"; \
-		echo "  ErrorLog ${APACHE_LOG_DIR}/error.log"; \
-		echo "  CustomLog ${APACHE_LOG_DIR}/access.log combined"; \
+		echo "  ErrorLog /dev/stderr"; \
+		echo "  CustomLog /dev/stdout combined"; \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
 COPY docker-ddb-entrypoint.sh /
