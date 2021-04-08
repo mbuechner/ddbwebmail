@@ -61,6 +61,7 @@ RUN rm -R /usr/src/roundcubemail/skins/larry /usr/src/roundcubemail/skins/classi
 RUN mkdir /usr/src/roundcubemail/plugins/ident_switch
 RUN git clone --branch 4.3.5 https://bitbucket.org/BoresExpress/ident_switch.git /usr/src/roundcubemail/plugins/ident_switch
 RUN cd /usr/src/roundcubemail/ && composer require roundcube/plugin-installer roundcube/filters:dev-filters-2.2.1
+RUN touch /usr/local/etc/php/conf.d/roundcube-override.ini /usr/local/etc/php/conf.d/roundcube-override.ini
 RUN chgrp -R 0 /usr/local/etc/php/conf.d/roundcube-override.ini /usr/local/etc/php/conf.d/roundcube-override.ini
 RUN chmod -R g=u /usr/local/etc/php/conf.d/roundcube-override.ini /usr/local/etc/php/conf.d/roundcube-override.ini
 ENTRYPOINT ["/docker-ddb-entrypoint.sh"]
