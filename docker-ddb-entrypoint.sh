@@ -62,7 +62,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
   : "${ROUNDCUBEMAIL_SMTP_PORT:=587}"
   : "${ROUNDCUBEMAIL_PLUGINS:=archive,zipdownload}"
   : "${ROUNDCUBEMAIL_SKIN:=elastic}"
-  : "${ROUNDCUBEMAIL_TEMP_DIR:=/tmp/roundcube-temp}"
+  : "${ROUNDCUBEMAIL_TEMP_DIR:=/tmp}"
 
   ROUNDCUBEMAIL_PLUGINS_PHP=`echo "${ROUNDCUBEMAIL_PLUGINS}" | sed -E "s/[, ]+/', '/g"`
 
@@ -88,10 +88,6 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 
   # initialize DB if not SQLite
   echo "${ROUNDCUBEMAIL_DSNW}" | grep -q 'sqlite:' || bin/initdb.sh --dir=$PWD/SQL || bin/updatedb.sh --dir=$PWD/SQL --package=roundcube || echo "Failed to initialize databse. Please run $PWD/bin/initdb.sh manually."
-
-  if [ ! -z "${ROUNDCUBEMAIL_TEMP_DIR}" ]; then
-    mkdir -p ${ROUNDCUBEMAIL_TEMP_DIR} && chown www-data ${ROUNDCUBEMAIL_TEMP_DIR}
-  fi
 
   if [ ! -z "${ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE}" ]; then
     echo "upload_max_filesize=${ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE}" >> /usr/local/etc/php/conf.d/roundcube-override.ini
