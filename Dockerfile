@@ -59,7 +59,7 @@ RUN { \
 } >> /usr/src/roundcubemail/config/config.inc.php
 RUN rm -R /usr/src/roundcubemail/skins/larry /usr/src/roundcubemail/skins/classic
 RUN mkdir /usr/src/roundcubemail/plugins/ident_switch
-RUN git clone --branch 4.3.1 https://bitbucket.org/BoresExpress/ident_switch.git /usr/src/roundcubemail/plugins/ident_switch
+RUN git clone --branch 4.3.5 https://bitbucket.org/BoresExpress/ident_switch.git /usr/src/roundcubemail/plugins/ident_switch
 RUN cd /usr/src/roundcubemail/ && composer require roundcube/plugin-installer roundcube/filters:dev-filters-2.2.1
 ENTRYPOINT ["/docker-ddb-entrypoint.sh"]
 CMD ["apache2-foreground"]
